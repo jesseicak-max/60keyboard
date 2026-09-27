@@ -1,20 +1,31 @@
-# This file generates the GitHub Actions matrix.
-# For simple board + shield combinations, add them to the top level board and
-# shield arrays, for more control, add individual board + shield combinations
-# to the `include` property. You can also use the `cmake-args` property to
-# pass flags to the build command, `snippet` to add a Zephyr snippet, and
-# `artifact-name` to assign a name to distinguish build outputs from each other:
-#
-# board: [ "nice_nano" ]
-# shield: [ "corne_left", "corne_right" ]
-# include:
-#   - board: bdn9_rev2
-#   - board: nice_nano
-#     shield: reviung41
-#   - board: nice_nano
-#     shield: corne_left
-#     snippet: studio-rpc-usb-uart
-#     cmake-args: -DCONFIG_ZMK_STUDIO=y
-#     artifact-name: corne_left_with_studio
-#
 ---
+include:
+  - board: nice_nano_v2
+    cmake-args:
+      - -DCONFIG_ZMK_KEYBOARD=y
+      - -DCONFIG_ZMK_KSCAN_MATRIX=y
+      - -DCONFIG_ZMK_BLE=y
+      - -DCONFIG_ZMK_BLE_KEYBOARD_OUTPUT=y
+      - -DCONFIG_ZMK_USB=y
+    snippet:
+      / {
+        chosen {
+          zmk,kscan = &kscan0;
+        };
+        keymap {
+          compatible = "zmk,keymap";
+          default_layer {
+            bindings =
+                <&kp A>  <&kp B>
+                <&kp C>  <&kp D>;
+          };
+        };
+      };
+
+      &kscan0 {
+        compatible = "zmk,kscan-matrix";
+        row-gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>,
+                    <&gpio0 7 GPIO_ACTIVE_HIGH>;
+        col-gpios = <&gpio0 8 GPIO_ACTIVE_HIGH>,
+                    <&gpio0 9 GPIO_ACTIVE_HIGH>;
+      };
