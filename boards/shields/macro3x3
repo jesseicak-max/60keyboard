@@ -1,0 +1,6 @@
+boards/shields/macro3x3/
+├─ Kconfig.shield
+├─ Kconfig.defconfig
+├─ macro3x3.overlay      # 设备树，定义GPIO行列矩阵
+├─ macro3x3.keymap       # 键位图层定义
+└─ macro3x3.zmk.yml      # 键盘元信息
